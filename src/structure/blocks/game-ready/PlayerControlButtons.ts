@@ -2,6 +2,7 @@ import { Block } from "../../Block";
 import { GAME } from "../../../GAME";
 import GameUI from "../../../dom/gameUI";
 
+// Показує кнопки зміни ставки та запуску обертання.
 export class PlayerControlButton extends Block {
 
     constructor(name: string) {
@@ -9,6 +10,7 @@ export class PlayerControlButton extends Block {
         super(name);
     }
 
+    // Показуємо панель керування й підписуємося на обертання, потім завершуємо блок.
     start() {
 
        this._gameControlsVisible();

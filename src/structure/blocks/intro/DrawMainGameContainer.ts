@@ -5,12 +5,14 @@ import { TGraphics } from "../../../pixi/TGraphics";
 import { VSprite } from "../../../pixi/VSprite";
 import { XContainer } from "../../../pixi/XContainer";
 
+// Створює основні шари сцени Pixi та додає фонову графіку.
 export class DrawMainGameContainer extends Block {
 
     constructor(name: string) {
         super(name);
     }
 
+    // Створюємо контейнери й фонові шари, а потім завершуємо блок.
     start() {
 
         this._organiseContainers();
@@ -19,6 +21,7 @@ export class DrawMainGameContainer extends Block {
         this.end();
     }
  
+    // Створюємо головний контейнер гри й додаємо його на сцену Pixi.
     private _organiseContainers(): void {
 
         const config = GAME.config.getConfig();
@@ -28,6 +31,7 @@ export class DrawMainGameContainer extends Block {
 
     }
 
+    // Додаємо зображення тла до головного контейнера сцени.
     private _appendGameBackground(): void {
 
         const image = Assets.get("dungeon_BG");
@@ -55,6 +59,7 @@ export class DrawMainGameContainer extends Block {
     }
 
     //debug tool
+    // Додаємо нерухомий шар підкладки за барабанами.
     private _appendConsistentBackboard(): void {
 
         const { main_game_backboard } = GAME.config.getConfig();

@@ -1,3 +1,4 @@
+// Сталі ідентифікатори для доступу до реєстру станів гри.
 export enum GameState  {
     SETUP = "SETUP",
     INTRO = "INTRO",

@@ -7,6 +7,7 @@ interface SInput extends posInterface {
     anchor: number | null;
     textureKey: Texture | string,
 }
+// Обгортка спрайта з розміром за формулами та необов'язковою обробкою натискання.
 export class VSprite  {
    
     sprite: Sprite;
@@ -24,6 +25,7 @@ export class VSprite  {
     
     private boundRedraw: () => void;
 
+    // Знаходимо текстуру, налаштовуємо спрайт, додаємо його до батька й підписуємося на перемальовування.
     constructor(sInput : SInput ) {
         
         const texture = typeof sInput.textureKey === 'string' 
@@ -73,6 +75,7 @@ export class VSprite  {
         }
     }
 
+    // Перераховуємо розмір і розташування спрайта після зміни макета.
     redraw(): void {
 
         this.sprite.width = this.w();

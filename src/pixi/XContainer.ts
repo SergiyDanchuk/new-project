@@ -10,6 +10,7 @@ export interface XContainerInput {
     altEvent?: CustomEvent<void>;
 }
 
+// Контейнер Pixi, розташування якого обчислюється формулами при зміні вікна.
 export class XContainer extends Container {
 
     label: string;
@@ -17,6 +18,7 @@ export class XContainer extends Container {
     yFormula: () => number;
     altEvent?: CustomEvent<void>;
 
+    // Зберігаємо формули розташування, задаємо початкові координати й підписуємося на перемальовування.
     constructor(input: XContainerInput) {
 
         super();
@@ -36,6 +38,7 @@ export class XContainer extends Container {
         }
     }
 
+    // Перераховуємо координати контейнера за актуальними формулами розташування.
     redraw(): void {
 
         this.position.x = this.xFormula();

@@ -17,6 +17,7 @@ interface GInput extends posInterface {
     color: number;
     pivot: number | null; // set to 0 for default, 0.5 for central pivot
 }
+// Обгортка прямокутника Pixi, який можна змінювати й обробляти його натискання.
 export class TGraphics {
 
     public graphics: Graphics;
@@ -33,6 +34,7 @@ export class TGraphics {
     isTransparent?: boolean;
     private boundRedraw: () => void;
 
+    // Створюємо прямокутник за формулами, додаємо до батьківського контейнера й підписуємося на перемальовування.
     constructor( input :GInput) {       
         this.graphics = new Graphics();
         this.parent = input.parent;
@@ -83,15 +85,18 @@ export class TGraphics {
     }
         
     // Add to stage helper
+    // Додаємо графіку до іншого контейнера Pixi.
     addTo(stage: Container) {
         this.graphics.addChild(stage);
     }
     
     // Getter to access underlying graphics
+    // Повертаємо об'єкт Graphics для доступу до API Pixi.
     get pixiGraphics() {
         return this.graphics;
     }
 
+    // Оновлюємо розмір і розташування графіки за поточними формулами макета.
     redraw(): void {
         this.graphics.width = this.w();
         this.graphics.height = this.h();

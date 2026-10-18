@@ -26,10 +26,13 @@ interface GameUIProps {
   models: DeepReadonly<Models>; // Read-only models
 }
 
+// Відображає інтерфейс браузера й надає станам гри доступ до його панелей.
 export default class GameUI extends Component<GameUIProps, GameUIState> {
 
+  // Зберігаємо посилання, щоб логіка гри поза React могла оновлювати інтерфейс.
   private static instance: GameUI | null = null;
 
+  // Ініціалізуємо видимість елементів і реєструємо екземпляр компонента.
   constructor(props: GameUIProps) {
     super(props);
     this.state = {
@@ -43,44 +46,52 @@ export default class GameUI extends Component<GameUIProps, GameUIState> {
     GameUI.instance = this;
   }
 
+  // Повертаємо змонтований екземпляр інтерфейсу, якщо він існує.
   public static getInstance(): GameUI | null {
     return GameUI.instance;
   }
 
+  // Показуємо або ховаємо вікно про нестачу коштів.
   public showPopup(isVisible: boolean): void {
     this.setState({
       showPopup: isVisible
     })
   }
 
+  // Показуємо або ховаємо панель балансу й обертання.
   public showGameControlArea(isVisible: boolean): void {
     this.setState({
       gameControlAreaVisible: isVisible
     })
   }
 
+  // Показуємо або ховаємо кнопки обертання та зміни ставки.
   public showGameControls(isVisible: boolean): void {
     this.setState({
       gameControlsVisible: isVisible
     })
   }
 
+  // Показуємо або ховаємо меню та керування звуком.
   public showMenuAudio(isVisible: boolean): void {
     this.setState({
       menuAudioVisible: isVisible
     })
   }
 
+  // Показуємо або ховаємо вікно вибору звуку під час першого запуску.
   public showAudioPopup(isVisible: boolean): void {
     this.setState({
       audioPopupVisible: isVisible
     })
   }
 
+  // Закриваємо вікно вибору звуку.
   private handleAudioPopupClose = (): void => {
     this.setState({ audioPopupVisible: false });
   }
 
+  // Перемикаємо меню й повідомляємо грі, що потрібно оновити дані інтерфейсу.
   private handleMenuToggle = (): void => {
     this.setState({
       menuIsOpen: !this.state.menuIsOpen
@@ -90,10 +101,12 @@ export default class GameUI extends Component<GameUIProps, GameUIState> {
     GAME.events.gameInfo.dispatch();
   }
 
+  // Закриваємо вікно про нестачу коштів.
   private handlePopupClose = (): void => {
     this.setState({ showPopup: false });
   }
 
+  // Формуємо годинник, кнопки, меню й модальні вікна відповідно до стану компонента.
   render() {
     const { models } = this.props;
     const { bet } = models;

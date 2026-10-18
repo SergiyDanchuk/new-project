@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import WinLine from './WinLine';
 
+// Статична довідка про вартість символів і доступні виграшні комбінації.
 export default class MenuContent extends Component {
 
+    // Показуємо групи символів і передаємо кожен шаблон лінії компоненту сітки.
     render() {
         return <>
             <h2 className="burger-menu__content">HIGH VALUE</h2>

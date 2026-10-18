@@ -5,6 +5,7 @@ import { XContainer } from "../pixi/XContainer";
 import { FORCED_RESULTS, ForcedResult } from "../forcedResults/FORCED-RESULTS";
 
 // Deep freeze utility to make nested objects and arrays read-only
+// Рекурсивно заморожуємо об'єкт і вкладені в нього масиви та об'єкти.
 export function deepFreeze<T>(obj: T): T {
     if (obj === null || typeof obj !== 'object') return obj;
 
@@ -19,6 +20,7 @@ export function deepFreeze<T>(obj: T): T {
     return obj;
 }
 
+// Беремо примусовий результат за заданим індексом або вибираємо випадковий.
 export function getRandomForcedResult(): ForcedResult {
 
     const potentialForcedResult = Object.keys(FORCED_RESULTS).map(Number);
@@ -34,6 +36,7 @@ export function getRandomForcedResult(): ForcedResult {
     return randomForcedResult;
 }
 
+// Повертаємо всі чотири контейнери барабанів у початкове вертикальне положення.
 export function resetReelContainerPositions(): void {
     // reset the positions of the reel containers
     GAME.containers.reelAContainer.y = 0;
@@ -42,6 +45,7 @@ export function resetReelContainerPositions(): void {
     GAME.containers.reelDContainer.y = 0;
 }
 
+// Знищуємо символи, видаляємо дочірні елементи барабанів і тимчасові обробники перемальовування.
 export function emptyAllReels(): void {
 
     GAME.containers.reelAContainer.children.forEach(child => child.destroy());
@@ -56,6 +60,7 @@ export function emptyAllReels(): void {
     GAME.events.tempRedraw.removeAll();
 }
 
+// Знаходимо кадри анімації символу у відповідному спрайтшиті.
 export function getSymbolFrames(symbol: string): any {
 
     var frames = [];
@@ -101,6 +106,7 @@ export function getSymbolFrames(symbol: string): any {
     return frames;
 }
 
+// Створюємо спрайт символу й зупиняємо його на першому кадрі.
 export function createSymbol(frames: any, yPosition?: number): ZAnimatedSprite {
     // makes a symbol
     if (!frames || frames.length === 0) {
@@ -121,6 +127,7 @@ export function createSymbol(frames: any, yPosition?: number): ZAnimatedSprite {
     return symbol;
 }
 
+// Створюємо анімований спрайт символу, спочатку зупинений на першому кадрі.
 export function createAnimatedSymbol(frames: any, yPosition?: number): ZAnimatedSprite {
     // makes an animated symbol that can be animated after creation
     if (!frames || frames.length === 0) {
@@ -140,6 +147,7 @@ export function createAnimatedSymbol(frames: any, yPosition?: number): ZAnimated
     return symbol;
 }
 
+// Перебудовуємо стовпець барабана з поточних рядків моделі та текстур символів.
 export function setupReel(reelNumber: number, reelContainer: XContainer, models: any): void {
     
     const allReels = models.reel.reelDisplay.length;

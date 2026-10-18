@@ -1,12 +1,14 @@
 import { Block } from "../../Block";
 import { GAME } from "../../../GAME";
 
+// Підсвічує символи, що входять до виграшної комбінації.
 export class AnimateWinlines extends Block {
 
     constructor(name: string) {
         super(name);
     }
 
+    // Анімуємо виграшні символи, якщо є виграш; інакше одразу продовжуємо.
     start() {
 
         this._animateWinLines();

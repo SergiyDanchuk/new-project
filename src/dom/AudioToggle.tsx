@@ -15,8 +15,10 @@ interface audioToggleState {
     isMuted: boolean;
 }
 
+// Показує кнопки звуку й гучності та реагує на відповідні події гри.
 export default class AudioToggle extends Component<audioToggleProps, audioToggleState> {
 
+    // Визначаємо початковий стан звуку з налаштування гравця.
     constructor(props: audioToggleProps) {
         super(props);
         this.state = {
@@ -25,21 +27,25 @@ export default class AudioToggle extends Component<audioToggleProps, audioToggle
 
         // Listen for audio toggle events to update state
     }
+    // Підписуємося на зміну звуку після монтування компонента.
     componentDidMount(): void {
         GAME.events.audioToggle.add(this.handleAudioToggle.bind(this));
         GAME.events.enableSound.add(this.handleEnableSound.bind(this));
     }
 
+    // Перемикаємо стан між вимкненим і ввімкненим звуком.
     handleAudioToggle = () => {
         // Toggle the mute state
         this.setState({ isMuted: !this.state.isMuted });
     }
 
+    // Оновлюємо індикатор відповідно до значення audio-enabled.
     handleEnableSound = (enableSound: boolean) => {
         // Update mute state based on sound enabled choice
         this.setState({ isMuted: !enableSound });
     }
 
+    // Показуємо кнопку звуку, а регулятори гучності — лише коли звук увімкнено.
     render() {
         const { isMuted } = this.state;
         const audioClass = isMuted

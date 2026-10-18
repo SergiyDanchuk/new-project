@@ -3,12 +3,14 @@ import { Block } from "../../Block";
 import { TGraphics } from "../../../pixi/TGraphics";
 import { XContainer } from "../../../pixi/XContainer";
 
+// Створює контейнери барабанів, їхні маски й панель для ефектів виграшу.
 export class DrawReelContainers extends Block {
 
     constructor(name: string) {
         super(name);
     }
 
+    // Готуємо контейнери й додаємо барабани, після чого завершуємо блок.
     start() {
 
         this._appendReels();
@@ -17,6 +19,7 @@ export class DrawReelContainers extends Block {
         this.end();
     }
 
+    // Створюємо контейнер для графіки панелі виграшу.
     private _winPanelContainer(): void {
 
         const { win_text_container } = GAME.config.getConfig();
@@ -25,6 +28,7 @@ export class DrawReelContainers extends Block {
         GAME.app.stage.addChild(GAME.containers.winPanelContainer);
     }
 
+    // Створюємо чотири контейнери барабанів і за потреби обрізаємо їхній вміст маскою.
     private _appendReels(): void {
 
         const { masterReelContainer, mainGameContainer } = GAME.containers;

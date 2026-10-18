@@ -1,12 +1,14 @@
 import { Block } from "../../Block";
 import { GAME } from "../../../GAME";
 
+// Час від часу анімує символи, поки гра чекає на дію гравця.
 export class AnimateOccasional extends Block {
 
     constructor(name: string) {
         super(name);
     }
 
+    // Вибираємо анімації очікування й завершуємо цей блок підготовки.
     start() {
 
         this._animateOccasional();

@@ -5,14 +5,18 @@ interface InsufficientFundsModalProps {
   onClose: () => void;
 }
 
+// Повідомляємо гравцеві, що балансу не вистачає на наступну ставку.
 export default function InsufficientFundsModal({ isVisible, onClose }: InsufficientFundsModalProps) {
+  // Нічого не відображаємо, поки вікно закрите.
   if (!isVisible) return null;
 
+  // Закриваємо вікно й перезавантажуємо демогру, щоб скинути початковий баланс.
   const handleOkClick = () => {
     onClose();
     location.reload();
   };
 
+  // Показуємо повідомлення про баланс і кнопку підтвердження.
   return (
     <div className="game-ui__popup">
       Insufficient funds<br />

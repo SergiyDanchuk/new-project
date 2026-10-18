@@ -4,6 +4,7 @@ import { Block } from "../../Block";
 import { gameConfig, GAME } from "../../../GAME";
 import { XContainer } from "../../../pixi/XContainer";
 
+// Обертає барабани з різними затримками й завершується після зупинки всіх чотирьох.
 export class AnimateReels extends Block {
 
     private reelTickers: Ticker[] = [];
@@ -14,12 +15,14 @@ export class AnimateReels extends Block {
         super(name);
     }
 
+    // Налаштовуємо затримки й швидкості кожного барабана для обертання.
     start() {
 
         this._setupReelAnimationSpeeds();
         // end in last animation complete
     }
 
+    // Випадково задаємо час і швидкість та плануємо рух кожного барабана.
     private _setupReelAnimationSpeeds(): void {
         const { reelAContainer, reelBContainer, reelCContainer, reelDContainer } = GAME.containers;
 
@@ -41,6 +44,7 @@ export class AnimateReels extends Block {
         });
     }
 
+    // Створюємо й запускаємо таймер Pixi, який переміщує барабан до точки зупинки.
     private _startAnimation(individualReelContainer: XContainer, speedMultiplier: number = 1.0): void {
 
         const endPos = (individualReelContainer.y + individualReelContainer.height) - gameConfig.gameWidth;
@@ -51,6 +55,7 @@ export class AnimateReels extends Block {
         ticker.start();
     }
 
+    // Рухаємo барабан до точки зупинки, відтворюємо звук і фіксуємо завершення.
     private _moveReel(stopPos: number, reelToMove: XContainer, ticker: Ticker, speedMultiplier: number = 1.0): void {
 
         if (reelToMove.position.y < stopPos) {

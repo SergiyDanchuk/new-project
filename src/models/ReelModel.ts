@@ -1,3 +1,4 @@
+// Ідентифікатори символів для формування барабанів і перевірки збігів.
 export enum SYMBOLS {
     H1 = "H1", //IDOL
     H2 = "H2", // RUBY
@@ -10,6 +11,7 @@ export enum SYMBOLS {
     L3 = "L3" // SKULL
 }
 
+// Множник виплати для кожної групи символів.
 export enum winMultipliers {
     H1 = 10,
     H2 = 10,
@@ -21,6 +23,7 @@ export enum winMultipliers {
     L2 = 3,
     L3 = 3
 }
+// Зберігає рядки символів, підготовлені для відображення на барабанах.
 export class ReelModel {
 
     reelDisplay: string[][] = [

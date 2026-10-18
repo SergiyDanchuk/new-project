@@ -6,8 +6,10 @@ import { PlayerControlButton } from "../blocks/game-ready/PlayerControlButtons";
 import { SetSymbolsToReel } from "../blocks/game-ready/SetSymbolsToReel";
 import { AnimateOccasional } from "../blocks/game-ready/AnimateOccasional";
 
+// Фаза очікування: показує кнопки, змінює ставку й запускає обертання за дією гравця.
 export class GameReadyState extends State {
 
+    // Підписуємося на події інтерфейсу, доступні під час гри.
     setupEvents(): void {
 
         console.log("🎮---------------------GameReadyState---------------------🎮");
@@ -15,14 +17,20 @@ export class GameReadyState extends State {
         const { events } = GAME;
         events.changeBet.add(this._updateBet.bind(this));
         events.gameInfo.add(this._updateGameInfo.bind(this));
+        // Демоподія: підписуємо обробник і одразу викликаємо цю подію.
+        events.dammyEvent.add(this._updateDammyInfo.bind(this));
+
+        events.dammyEvent.dispatch();
     }
 
+    // Готуємо показані символи й очищуємо дані попередньої виплати.
     modelChanges(): void {
 
         this._prepareDisplayReel();
         this._resetLastWinAmount();
     }
 
+    // Розставляємо символи, за потреби анімуємо їх і вмикаємо кнопки керування.
     setupBlocks(): void {
 
         this.blocks = [
@@ -32,6 +40,7 @@ export class GameReadyState extends State {
         ];
     }
 
+    // Відписуємо обробники цього стану перед переходом до наступного.
     removeEvents(): void {
 
         const { events } = GAME;
@@ -39,8 +48,10 @@ export class GameReadyState extends State {
         events.changeBet.removeAll();
         events.spinButton.removeAll();
         events.gameInfo.removeAll();
+        events.dammyEvent.removeAll();
     }
 
+    // Після натискання обертання переходимо до формування результату й анімації барабанів.
     exitState(): void {
 
         GAME.states[GameState.SPIN_RESULT].enterState();
@@ -48,6 +59,7 @@ export class GameReadyState extends State {
 
     //-----------------------------------------------------------------------------------//
 
+    // Переносимо попередній результат на барабани й очищуємо його буфер.
     private _prepareDisplayReel(): void {
 
         const { reel, result } = this.models;
@@ -57,11 +69,13 @@ export class GameReadyState extends State {
         result.spinResult = [];
     }
 
+    // Скидаємо попередню виплату перед наступним обертанням.
     private _resetLastWinAmount(): void {
 
         this.models.result.lastWinAmount = 0;
     }
 
+    // Змінюємо ставку в межах балансу й надсилаємо подію оновлення інтерфейсу.
     private _updateBet(betChange: number): void {
 
         const { bet } = this.models;
@@ -96,6 +110,7 @@ export class GameReadyState extends State {
         events.gameInfo.dispatch();
     }
 
+    // Передаємо поточну ставку й баланс змонтованому компоненту керування.
     private _updateGameInfo(): void {
 
         const { bet } = this.models;
@@ -106,5 +121,10 @@ export class GameReadyState extends State {
 
             gameControlArea.setBankInfo(bet.betAmount, bet.bankBalance);
         }
+    }
+
+    // Виводимо повідомлення, щоб перевірити спрацювання підписки на демоподію.
+    private _updateDammyInfo(): void {
+        console.log("Dammy event triggered");
     }
 }

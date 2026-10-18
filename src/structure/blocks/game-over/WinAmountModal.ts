@@ -3,6 +3,7 @@ import { GAME } from "../../../GAME";
 import { Text, Ticker } from "pixi.js";
 import { TGraphics } from "../../../pixi/TGraphics";
 
+// Показує суму виплати після завершення анімації виграшу.
 export class WinAmountModal extends Block {
 
     private _skipAnimation: boolean = false;
@@ -11,6 +12,7 @@ export class WinAmountModal extends Block {
         super(name);
     }
 
+    // Показуємо виграш і завершуємо блок обробки результату.
     start() {
 
         const { isWin, lastWinAmount } = this.models.result;

@@ -6,12 +6,14 @@ import { XContainer } from "../../../pixi/XContainer";
 import { ZAnimatedSprite } from "../../../pixi/ZAnimatedSprite";
 import { Assets } from "pixi.js";
 
+// Створює початкову заставку й додає декоративні анімовані спрайти.
 export class DrawSplashContainer extends Block {
 
     constructor(name: string) {
         super(name);
     }
 
+    // Складаємо елементи заставки, чекаємо завершення показу й завершуємо блок.
     start() {
 
         this._createSplashContainer();
@@ -29,6 +31,7 @@ export class DrawSplashContainer extends Block {
         GAME.events.blockComplete.dispatch();
     }
 
+    // Створюємо контейнер заставки й додаємо його на сцену Pixi.
     private _createSplashContainer() : void {
 
         const app = GAME.app;
@@ -38,6 +41,7 @@ export class DrawSplashContainer extends Block {
         app.stage.addChild(splashContainer);
     }
 
+    // Додаємо зображення вступного тла до контейнера заставки.
     private _drawIntroSprite(): void {
    
         GAME.events.spinButton.add(() => this.end());
@@ -50,6 +54,7 @@ export class DrawSplashContainer extends Block {
         splashImage.sprite.cursor = 'pointer';
     }
 
+    // Додаємо декоративні анімовані елементи вступної сцени.
     private _drawDecorativeAnimations(): void {
 
         const { decorative_animation } = GAME.config.getConfig();

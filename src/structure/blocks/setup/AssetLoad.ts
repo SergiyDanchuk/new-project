@@ -4,6 +4,7 @@ import { GAME } from "../../../GAME";
 import { XContainer } from "../../../pixi/XContainer";
 import { TGraphics } from "../../../pixi/TGraphics";
 
+// Завантажує зображення й спрайтшити гри та показує перебіг завантаження.
 export class AssetLoad extends Block {
 
     private progressBar: TGraphics;
@@ -18,6 +19,7 @@ export class AssetLoad extends Block {
         super(name);
     }
 
+    // Показуємо індикатор, завантажуємо ресурси, прибираємо індикатор і завершуємо блок.
     start() {
 
         this._organiseContainer();
@@ -30,6 +32,7 @@ export class AssetLoad extends Block {
         });
     }
 
+    // Реєструємо набір ресурсів і оновлюємо індикатор у міру завантаження файлів.
     private async _loadAssets(): Promise<void> {
        
         Assets.addBundle('all-assets', {
@@ -54,6 +57,7 @@ export class AssetLoad extends Block {
 
     }
 
+    // Створюємо й додаємо контейнер для індикатора завантаження.
     private _organiseContainer(): void {
 
         const { progress_container } = GAME.config.getConfig();
@@ -61,6 +65,7 @@ export class AssetLoad extends Block {
         GAME.app.stage.addChild(GAME.containers.progressContainer);
     }
 
+    // Малюємо смугу завантаження й додаємо випадково вибрану цитату.
     private _createProgressBar(): void {
 
         const { loading_background_bar, progress_bar, progress_text } = GAME.config.getConfig();
@@ -78,6 +83,7 @@ export class AssetLoad extends Block {
         GAME.containers.progressContainer.addChild(progressText);
     }
 
+    // Задаємо ширину смуги відповідно до прогресу й запускаємо перемальовування.
     private _updateProgressBar(percentage: number): void {
 
         const maxWidth = 300;
@@ -86,6 +92,7 @@ export class AssetLoad extends Block {
         GAME.events.redraw.dispatch();
     }
 
+    // Видаляємо й знищуємо інтерфейс завантаження після готовності ресурсів.
     private _destroyProgressBar(): void {
 
         GAME.app.stage.removeChild(GAME.containers.progressContainer);

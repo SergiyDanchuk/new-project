@@ -1,6 +1,9 @@
+// Дані одного обертання, які використовують перевірка виграшу й анімації.
 export class Resultmodel {
+    // Чи збіглася хоча б одна задана лінія.
     isWin: boolean = false;
     
+    // Чотири ряди символів, що утворюють остаточний результат.
     spinResult: string[][] = [
        ["H1", "H2", "H3", "H1"],
        ["M1", "M2", "M3", "M1"],
@@ -8,9 +11,11 @@ export class Resultmodel {
        ["H1", "H2", "H3", "H1"]
     ];
 
+    // Координати барабанів і символів, які потрібно підсвітити як виграшні.
     linesToAnimate: Array<{reelIndex: number, symbolIndex: number}> = [];
 
     // Define all 8 possible win lines
+    // У шаблоні X позначає клітинки лінії, а 0 — клітинки, які не перевіряються.
     winLines: { [key: string]: string[][] } = {
         "1": [
             ["X","X","X","X"],
@@ -65,5 +70,6 @@ export class Resultmodel {
     };
     
     // Store the last win amount
+    // Виплата за останнє обертання, яку показує інтерфейс виграшу.
     lastWinAmount: number = 0;
 }

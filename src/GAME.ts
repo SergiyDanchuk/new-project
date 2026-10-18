@@ -11,6 +11,7 @@ import { GameOverState } from "./structure/states/GameOverState";
 import { CustomEvent } from "./events/CustomEvent";
 import { sound } from "@pixi/sound";
 
+// Параметри полотна, ставок, налагоджувальних повідомлень і примусових результатів.
 type GameConfig = {
     gameWidth: number,
     gameHeight: number,
@@ -26,6 +27,7 @@ type GameConfig = {
     masksEnabled: boolean
 }
 
+// Спільні налаштування, які використовують стани гри та засоби відображення.
 export const gameConfig: GameConfig = {
     gameWidth: 320,
     gameHeight: 500,
@@ -41,6 +43,7 @@ export const gameConfig: GameConfig = {
     masksEnabled: true
 }
 
+// Типова структура спільного глобального об'єкта гри.
 type GAME_Type = {
     states: {
         [GameState.SETUP]: SetupState,
@@ -60,6 +63,7 @@ type GAME_Type = {
         gameInfo: CustomEvent<void>,
         changeBet: CustomEvent<number>,
         enableSound: CustomEvent<boolean>,
+        dammyEvent: CustomEvent<void>,
     },
     containers: {
         progressContainer: XContainer | undefined,
@@ -77,10 +81,10 @@ type GAME_Type = {
     config: PIXI_CONFIG | undefined
 }
 
-// Create a global models instance
+// Створюємо спільні моделі стану для інтерфейсу й ігрової логіки.
 export const GAME_MODELS = new Models();
 
-// Create the global game instance with proper initialization
+// Створюємо глобальний реєстр станів, подій, контейнерів Pixi та об'єктів застосунку.
 export const GAME: GAME_Type = {
     states: {
         [GameState.SETUP]: new SetupState(),
@@ -99,7 +103,8 @@ export const GAME: GAME_Type = {
         spinButton: new CustomEvent<void>("spin-button"),
         gameInfo: new CustomEvent<void>("game-info", true),
         changeBet: new CustomEvent<number>("change-bet"),
-        enableSound: new CustomEvent<boolean>("sound-enabled", true)
+        enableSound: new CustomEvent<boolean>("sound-enabled", true),
+        dammyEvent: new CustomEvent<void>("dammy-event"),
     },
     containers: {
         progressContainer: undefined,
@@ -117,5 +122,5 @@ export const GAME: GAME_Type = {
     config: new PIXI_CONFIG()
 }
 
-// Enter the setup state
+// Запускаємо життєвий цикл гри: завантажуємо ресурси й готуємо звук.
 GAME.states[GameState.SETUP].enterState();

@@ -10,8 +10,10 @@ import { DrawGameLogo } from "../blocks/intro/DrawGameLogo";
 import { DrawReelBackboard } from "../blocks/intro/DrawReelBackboard";
 import { DrawReelContainers } from "../blocks/intro/DrawReelContainers";
 
+// Створює початкову сцену гри й переходить до фази очікування гравця.
 export class IntroState extends State {
     
+    // Підписуємося на керування звуком, поки вступна фаза обробляє ці події.
     setupEvents(): void {
 
         console.log("🌟-----------------------IntroState-----------------------🌟");
@@ -20,10 +22,12 @@ export class IntroState extends State {
         GAME.events.volumeDown.add(this._volumeDown.bind(this));
     }
 
+    // Для створення вступної сцени змінювати моделі не потрібно.
     modelChanges(): void {
         //
     }
     
+    // Формуємо чергу шарів сцени в порядку їх створення.
     setupBlocks(): void {
 
         this.blocks = [
@@ -37,10 +41,12 @@ export class IntroState extends State {
         ];
     }
 
+    // Очищення подій вступної фази поки не реалізовано.
     removeEvents(): void {
         // stub
     }
 
+    // Показуємо керування звуком і переходимо до стану готовності.
     exitState(): void {
 
         GameUI.getInstance()?.showMenuAudio(true);
@@ -48,6 +54,7 @@ export class IntroState extends State {
     }    
 // -------------------------------------------------------------------------//
 
+    // Перемикаємо вимкнення звуку Pixi, якщо звукову систему вже завантажено.
     private _toggleAudio(): void {
 
         console.log("🔊-----------------------Audio Toggled-----------------------🔊");
@@ -56,6 +63,7 @@ export class IntroState extends State {
         }
     }
 
+    // Збільшуємо загальну гучність на половину одиниці.
     private _volumeUp(): void {
 
         console.log("🔊-----------------------Volume Up-----------------------🔊");
@@ -64,6 +72,7 @@ export class IntroState extends State {
         }
     }
 
+    // Зменшуємо загальну гучність на половину одиниці.
     private _volumeDown(): void {
 
         console.log("🔊-----------------------Volume Down-----------------------🔊");

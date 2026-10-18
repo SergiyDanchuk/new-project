@@ -8,19 +8,23 @@ import { PositionStartOfSpin } from "../blocks/spin-result/PositionStartOfSpin";
 import { SetSymbolsToReel } from "../blocks/game-ready/SetSymbolsToReel";
 import { getRandomForcedResult } from "../../utils/ReelHelper";
 
+// Формує результат обертання, анімує барабани й переходить до перевірки виграшу.
 export class SpinResultState extends State {
 
+    // Очікуємо події оновлення відображення балансу під час обертання.
     setupEvents(): void {
 
         console.log("🎲--------------------SpinResultState---------------------🎲");
         GAME.events.gameInfo.add(this._updateGameInfo.bind(this));
     }
 
+    // Вибираємо й зберігаємо результат до запуску анімаційних блоків.
     modelChanges(): void {
 
         this._generateSpinResult();
     }
 
+    // Додаємо в чергу розміщення символів, початкову позицію й рух барабанів.
     setupBlocks(): void {
 
         this.blocks = [
@@ -30,17 +34,20 @@ export class SpinResultState extends State {
         ];
     }
 
+    // Видаляємо підписку інтерфейсу після завершення фази обертання.
     removeEvents(): void {
 
         GAME.events.gameInfo.removeAll();
     }
 
+    // Після обертання переходимо до підрахунку виплати й перевірки ліній.
     exitState(): void {
 
         GAME.states[GameState.GAME_OVER].enterState();
     }
     // ------------------------------------------------------
 
+    // Використовуємо примусовий результат за налаштуванням або випадковим шансом.
     private _generateSpinResult(): void {
 
         if (gameConfig.useForcedResult || this._randomDecideUseForcedResult()) {
@@ -52,12 +59,14 @@ export class SpinResultState extends State {
         }
     }
 
+    // Вибираємо примусовий результат із шансом 1 до заданого знаменника.
     private _randomDecideUseForcedResult(): boolean {
 
         const probability = gameConfig.probabilityFRChosen;
         return Math.floor(Math.random() * probability) + 1 === 1;
     }
 
+    // Формуємо ряд із чотирьох випадково вибраних ідентифікаторів символів.
     private _generateRandomDisplayRow(): string[] {
 
         const symbols = Object.values(SYMBOLS);
@@ -69,6 +78,7 @@ export class SpinResultState extends State {
         return row;
     }
 
+    // Додаємо випадкові рядки на барабан і зберігаємо чотири як результат.
     private _generateRandomSpinResult(): void {
 
         const { reel, result } = this.models;
@@ -88,6 +98,7 @@ export class SpinResultState extends State {
         }
     }
 
+    // Додаємо випадкові рядки перед копією заданого результату.
     private _generateForcedSpinResult(): void {
 
         const { reel, result } = this.models;
@@ -108,6 +119,7 @@ export class SpinResultState extends State {
         result.spinResult = resultCopy;
     }
 
+    // Оновлюємо показані елементами керування ставку й баланс.
     private _updateGameInfo(): void {
 
         const { bet } = this.models;

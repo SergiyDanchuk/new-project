@@ -1,7 +1,9 @@
 import { gameConfig, GAME } from "./GAME";
 
+// Містить адаптивні формули розташування елементів завантаження та ігрової сцени Pixi.
 export class PIXI_CONFIG {    
     
+    // Повертаємо налаштування з формулами, що враховують поточний розмір вікна.
     public getConfig() {
         return {
             "progress_container": {

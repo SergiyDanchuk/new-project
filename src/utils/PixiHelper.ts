@@ -1,3 +1,4 @@
+// Генеруємо яскравий випадковий колір і пакуємо його RGB-канали в число для Pixi.
 export function _getRandomBrightColor(): number {
 
     const hue = Math.random(); // 0 to 1
@@ -8,6 +9,7 @@ export function _getRandomBrightColor(): number {
     return (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
 }
 
+// Перетворюємо відтінок, насиченість і яскравість на цілі RGB-канали.
 export function _hsvToRgb(h: number, s: number, v: number): [number, number, number] {
 
     const i = Math.floor(h * 6);

@@ -10,18 +10,24 @@ import { winMultipliers } from "../../models/ReelModel";
 import { WinAmountModal } from "../blocks/game-over/WinAmountModal";
 import { Ticker } from "pixi.js";
 
+// Перевіряє виграші й баланс, відтворює ефекти результату та повертається до очікування.
 export class GameOverState extends State {
 
+    // Ставка, збережена до зміни балансу; використовується для розрахунку виплати.
     private _currentBet: number = 0;
+    // Чи вистачає гравцеві коштів на наступне обертання.
     private _insufficientFunds: boolean;
+    // Ключі шаблонів виграшних ліній, що збіглися в останньому обертанні.
     private _landedWinLines: string[] = [];
     
+    // Оновлюємо показ балансу під час обробки результату.
     setupEvents(): void {
 
         console.log("💀---------------------GameOverState----------------------💀");
         GAME.events.gameInfo.add(this._updateGameInfo.bind(this));
     }
 
+    // Скидаємо попередні ознаки результату, перевіряємо виграші й оновлюємо кошти.
     modelChanges(): void {
 
         this._resetWin();
@@ -32,6 +38,7 @@ export class GameOverState extends State {
         this._checkInsufficientFunds();
     }
 
+    // Ставимо в чергу очищення, розміщення символів, анімації виграшу й показ виплати.
     setupBlocks(): void {
 
         this.blocks = [
@@ -42,11 +49,13 @@ export class GameOverState extends State {
         ];
     }
 
+    // Видаляємо обробник цього стану перед поверненням до стану готовності.
     removeEvents(): void {
         
         GAME.events.gameInfo.removeAll();
     }
 
+    // За нестачі коштів ставимо гру на паузу й показуємо вікно, потім повертаємося до очікування.
     exitState(): void {
 
         if (this._insufficientFunds) {
@@ -62,16 +71,19 @@ export class GameOverState extends State {
 
     // -------------------------------------------------------------------------//
 
+    // Скидаємо ознаку попереднього виграшу перед перевіркою поточного.
     private _resetWin() :void {
 
         this.models.result.isWin = false;
     }
 
+    // Прибираємо тимчасові рядки й залишаємо на барабанах остаточний результат.
     private _trimReelDisplay(): void {
 
         this.models.reel.reelDisplay = this.models.result.spinResult;
     }
 
+    // Ставимо гру на паузу, якщо немає балансу, ставки та виграшу.
     private _checkInsufficientFunds(): void {
 
         const { bet, result } = this.models;
@@ -81,11 +93,12 @@ export class GameOverState extends State {
         }
     }
 
+    // Зберігаємо початкову ставку, за потреби зменшуємо її й списуємо з балансу.
     private _deductNextBet(): void {
 
         const { bet } = this.models;
 
-        // Store the original bet amount before any adjustments
+        // Зберігаємо початкову суму ставки до будь-яких змін.
         this._currentBet = bet.betAmount;
 
         if (bet.bankBalance < this._currentBet) {
@@ -99,13 +112,14 @@ export class GameOverState extends State {
             }
         }
 
-        // Deduct the bet amount
+        // Списуємо суму ставки.
         if (bet.bankBalance >= bet.betAmount) {
 
             bet.bankBalance -= bet.betAmount;
         }
   
     }
+    // Розраховуємо виплату за кожну виграшну лінію й додаємо суму до балансу.
     private _awardPayout(): void {
 
         const { bet, result } = this.models;
@@ -127,7 +141,7 @@ export class GameOverState extends State {
                 }
                 if (symbol && winMultipliers[symbol as keyof typeof winMultipliers]) {
                     const multiplier = winMultipliers[symbol as keyof typeof winMultipliers];
-                    // Use this._currentBet for win calculations to handle insufficient funds case
+                    // Використовуємо збережену ставку, зокрема коли коштів на повну ставку бракує.
                     const winForLine = this._currentBet * multiplier;
                     console.log(`💵 Win line ${winLineKey}: Symbol ${symbol}, Multiplier ${multiplier}, Win ${winForLine}`);
                     totalWin += winForLine;
@@ -139,6 +153,7 @@ export class GameOverState extends State {
         }
     }
 
+    // Перевіряємо кожен шаблон і збираємо позиції збігів для анімації.
     private _checkWinLines(): void {
 
         const { result } = this.models;
@@ -146,25 +161,26 @@ export class GameOverState extends State {
 
         if (!spinResult || spinResult.length < 4) return;
 
-        // Reset lines to animate and landed win lines
+        // Очищуємо списки ліній для анімації та знайдених виграшів.
         result.linesToAnimate = [];
         this._landedWinLines = [];
 
-        // Check each predefined win line
+        // Перевіряємо кожну задану виграшну лінію.
         Object.entries(result.winLines).forEach(([winLineKey, winLinePattern]) => {
             if (this._checkWinLinePattern(spinResult, winLinePattern)) {
                 result.isWin = true;
                 this._landedWinLines.push(winLineKey);
 
-                // Add positions to animate based on win line type
+                // Додаємо координати символів цієї лінії до списку анімації.
                 const positions = this._getPositionsForWinLine(winLineKey);
                 result.linesToAnimate.push(...positions);
             }
         });
     }
 
+    // Повертаємо true, якщо всі позначені клітинки містять однаковий символ.
     private _checkWinLinePattern(spinResult: string[][], pattern: string[][]): boolean {
-        // Get all X positions from the pattern
+        // Збираємо координати всіх клітинок, позначених X.
         const xPositions: Array<{ row: number, col: number }> = [];
 
         for (let row = 0; row < pattern.length; row++) {
@@ -175,7 +191,7 @@ export class GameOverState extends State {
             }
         }
 
-        // Check if all X positions have the same symbol
+        // Перевіряємо, що в усіх позначених клітинках однаковий символ.
         if (xPositions.length === 0) return false;
 
         const firstSymbol = spinResult[xPositions[0].row][xPositions[0].col];
@@ -183,12 +199,13 @@ export class GameOverState extends State {
         return xPositions.every(pos => spinResult[pos.row][pos.col] === firstSymbol);
     }
 
+    // Перетворюємо позначені клітинки шаблону на координати барабанів і символів.
     private _getPositionsForWinLine(winLineKey: string): Array<{ reelIndex: number, symbolIndex: number }> {
 
         const positions: Array<{ reelIndex: number, symbolIndex: number }> = [];
         const pattern = this.models.result.winLines[winLineKey];
 
-        // Find all X positions and convert to reel/symbol positions
+        // Знаходимо клітинки X і перетворюємо їх на координати для анімації.
         for (let row = 0; row < pattern.length; row++) {
 
             for (let col = 0; col < pattern[row].length; col++) {
@@ -202,6 +219,7 @@ export class GameOverState extends State {
         return positions;
     }
 
+    // Оновлюємо відображення ставки й балансу за спільною моделлю.
     private _updateGameInfo(): void {
 
         const { bet } = this.models;
@@ -213,5 +231,4 @@ export class GameOverState extends State {
             gameControlArea.setBankInfo(bet.betAmount, bet.bankBalance);
         }
     }
-
 }

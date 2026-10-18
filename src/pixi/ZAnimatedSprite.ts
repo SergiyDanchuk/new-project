@@ -14,6 +14,7 @@ export interface ZAnimatedSpriteInput {
     altEvent?: CustomEvent<void>;
 }
 
+// Анімований спрайт, що перераховує розмір і розташування під час перемальовування.
 export class ZAnimatedSprite extends AnimatedSprite {
     label: string;
     xFormula: () => number;
@@ -23,6 +24,7 @@ export class ZAnimatedSprite extends AnimatedSprite {
     altEvent?: CustomEvent<void>;
     private boundRedraw: () => void;
 
+    // Налаштовуємо текстури, формули макета, параметри відтворення й підписку на перемальовування.
     constructor(input: ZAnimatedSpriteInput) {
         super(input.textures);
         
@@ -54,6 +56,7 @@ export class ZAnimatedSprite extends AnimatedSprite {
         }
     }
 
+    // Перераховуємо розмір і розташування спрайта після зміни макета.
     redraw(): void {
         this.position.x = this.xFormula();
         this.position.y = this.yFormula();
@@ -62,12 +65,14 @@ export class ZAnimatedSprite extends AnimatedSprite {
     }
 
     // Method to update textures/frames at runtime
+    // Замінюємо кадри анімації та запускаємо її з першого кадру.
     updateTextures(textures: Texture[]): void {
         this.textures = textures;
         this.gotoAndPlay(0); // Restart animation with new frames
     }
 
     // Method to cleanup event listeners before destroying
+    // Відписуємо обробники перемальовування перед знищенням спрайта.
     cleanup(): void {
         GAME.events.redraw.remove(this.boundRedraw);
         if (this.altEvent) {

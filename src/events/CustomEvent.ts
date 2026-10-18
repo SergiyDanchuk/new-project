@@ -1,16 +1,22 @@
 import { gameConfig } from "../GAME";
 
+// Невеликий типізований механізм подій для зв'язку станів гри та компонентів інтерфейсу.
 export class CustomEvent<T = void> {
+    // Назва події для налагоджувальних повідомлень.
     private eventName: string;
+    // Чи очікується для цієї події кілька обробників.
     private multipleCallersAllowed: boolean;
+    // Функції, які викликаються під час dispatch цієї події.
     private listeners: ((arg?: T) => void)[] = [];
 
+    // Зберігаємо параметри події; якщо multiAllowed не задано, він дорівнює false.
     constructor(name:string, multiAllowed?: boolean){
         this.eventName = name;
         this.multipleCallersAllowed = multiAllowed;
     }
 
   // Add listener
+  // Додаємо обробник і за потреби попереджаємо про дублікати для одиничної події.
   add(listener: (arg?: T) => void) {
     this.listeners.push(listener);
     if(this.listeners.length > 1 && !this.multipleCallersAllowed ) {
@@ -22,15 +28,18 @@ export class CustomEvent<T = void> {
   }
 
   // Remove listener
+  // Відписуємо вказаний обробник, залишаючи решту підписок.
   remove(listener: (arg?: T) => void) {
     this.listeners = this.listeners.filter(l => l !== listener);
   }
 
+  // Видаляємо всі обробники цієї події.
   removeAll() {
     this.listeners = [];
   }
 
   // Dispatch event
+  // Викликаємо всі поточні обробники та за потреби повідомляємо про відсутність підписок.
   dispatch(arg?: T) {
     if (gameConfig.showEventConsole) {
       console.log(`⚡ DISPATCH : ${this.eventName} (${this.listeners.length} listeners)`);
@@ -49,6 +58,7 @@ export class CustomEvent<T = void> {
   }
 
   // Get information about where the event is being dispatched from
+  // Знаходимо в трасуванні стека місце виклику події без обробників.
   private getCallerInfo(): string {
     try {
       // Create an error to get the stack trace
@@ -75,6 +85,7 @@ export class CustomEvent<T = void> {
   }
 
   // Check if there are listeners
+  // Перевіряємо, чи є зараз хоча б один підписаний обробник.
   hasListeners(): boolean {
     return this.listeners.length > 0;
   }

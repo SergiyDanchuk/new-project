@@ -2,12 +2,14 @@ import { GAME } from "../../../GAME";
 import { Block } from "../../Block";
 import { setupReel } from "../../../utils/ReelHelper";
 
+// Формує кожен видимий стовпець барабана за поточною моделлю.
 export class SetSymbolsToReel extends Block {
 
     constructor(name: string) {
         super(name);
     }
 
+    // Перебудовуємо всі чотири стовпці й завершуємо синхронний блок.
     start() {
 
         this._addSymbolsToReelContainers();

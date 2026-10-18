@@ -2,12 +2,14 @@ import { Block } from "../../Block";
 import { Assets } from 'pixi.js';
 import { GAME } from "../../../GAME";
 
+// Налаштовує звукові ефекти й музику, якщо гравець увімкнув звук.
 export class SetupSounds extends Block {
 
     constructor(name: string) {
         super(name);
     }
 
+    // За потреби налаштовуємо звук і продовжуємо послідовність запуску гри.
     start() {
 
         if (this.models.progress.playWithSound) {
@@ -16,6 +18,7 @@ export class SetupSounds extends Block {
         this.end();
     }
 
+    // Завантажуємо модуль звуку, реєструємо аудіофайли й задаємо їхню початкову гучність.
     private setupSounds(): void {
         // Load sound library dynamically after user interaction
         import('@pixi/sound').then(({ sound }) => {
